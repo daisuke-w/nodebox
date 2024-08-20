@@ -89,3 +89,54 @@ body {
 .game-info {
   margin-left: 20px;
 }
+
+.toggleButton {
+  position: relative;
+  margin-left: 20px;
+}
+
+.toggleButton input {
+  display: none;
+}
+
+.toggleButton {
+  --switchHeight: 1rem;
+  --switchWidth: 2rem;
+  --switchPadding: 0.1rem;
+  --circleSize: calc(var(--switchHeight) - var(--switchPadding) * 2);
+}
+
+.toggleButton label {
+  display: inline-block;
+  cursor: pointer;
+  position: relative;
+  width: var(--switchWidth);
+  height: var(--switchHeight);
+  border-radius: var(--switchHeight);
+  background: #ccc;
+  transition: 0.4s;
+}
+
+.toggleButton label:after {
+  cursor: pointer;
+  content: '';
+  position: absolute;
+  left: var(--switchPadding);
+  top: 0;
+  bottom: 0;
+  margin: auto;
+  width: var(--circleSize);
+  height: var(--circleSize);
+  border-radius: 50%;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+  background: #fff;
+  transition: 0.4s;
+}
+
+.toggleButton input:checked + label {
+  background-color: #4bd865;
+}
+
+.toggleButton input:checked + label:after {
+  left: calc(var(--switchWidth) - var(--circleSize) - var(--switchPadding));
+}
