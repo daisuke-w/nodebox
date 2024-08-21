@@ -140,3 +140,7 @@ body {
 .toggleButton input:checked + label:after {
   left: calc(var(--switchWidth) - var(--circleSize) - var(--switchPadding));
 }
+
+.square.winning {
+  background-color: #4bc3d8;
+}
