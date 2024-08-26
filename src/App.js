@@ -93,16 +93,16 @@ export default function Game() {
 
   const moves = history.map((step, move) => {
     const location = step.location ? `(row: ${step.location.row}, col: ${step.location.col})` : '';
-    const description = move === 0
-      ? 'Go to game start'
-      : `Go to move #${move} ${location}`;
+    const description = move > 0 ? `Go to move #${move} ${location}` : 'Go to game start';
+  
+    const isCurrentMove = move === currentMove;
+    const buttonClass = isCurrentMove ? 'move-button current-move' : 'move-button';
+  
     return (
       <li key={move}>
-        {move === currentMove ? (
-          <h6>{description}</h6>
-        ) : (
-          <button onClick={() => jumpTo(move)}>{description}</button>
-        )}
+        <button className={buttonClass} onClick={() => jumpTo(move)}>
+          {description}
+        </button>
       </li>
     );
   });
@@ -119,7 +119,7 @@ export default function Game() {
           <input id="toggle" type="checkbox" onClick={toggleSortOrder} />
           <label htmlFor="toggle" />
         </div>
-        <ol reversed={!isAscending}>{sortedMoves}</ol>
+        <ul className="move-list" reversed={!isAscending}>{sortedMoves}</ul>
       </div>
     </div>
   );
