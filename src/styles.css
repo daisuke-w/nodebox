@@ -81,18 +81,27 @@ body {
 .status {
   margin-bottom: 10px;
 }
+
 .game {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
+  align-items: center;
+}
+
+.game-board {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .game-info {
-  margin-left: 20px;
+  margin-top: 20px;
 }
 
 .toggleButton {
   position: relative;
   margin-left: 20px;
+  top: 20px;
 }
 
 .toggleButton input {
