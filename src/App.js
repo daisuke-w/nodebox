@@ -93,11 +93,9 @@ export default function Game() {
 
   const moves = history.map((step, move) => {
     const location = step.location ? `(row: ${step.location.row}, col: ${step.location.col})` : '';
-    const description = move === currentMove
-      ? `You are at move #${move} ${location}`
-      : move > 0
-      ? `Go to move #${move} ${location}`
-      : 'Go to game start';
+    const description = move === 0
+      ? 'Go to game start'
+      : `Go to move #${move} ${location}`;
     return (
       <li key={move}>
         {move === currentMove ? (
