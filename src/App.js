@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import confetti from 'canvas-confetti';
 
 function Square({ value, onSquareClick, isWinningSquare }) {
   const className = isWinningSquare ? 'square winning' : 'square';
@@ -10,17 +11,24 @@ function Square({ value, onSquareClick, isWinningSquare }) {
 }
 
 function Board({ xIsNext, squares, onPlay }) {
-  const {winner, winnerLine} = calculateWinner(squares);
+  const { winner, winnerLine } = calculateWinner(squares);
+
+  useEffect(() => {
+    if (winner) {
+      confetti({
+        particleCount: 200,
+        spread: 70,
+        origin: { y: 0.6 },
+      });
+    }
+  }, [winner]);
+
   function handleClick(i) {
     if (winner || squares[i]) {
       return;
     }
     const nextSquares = squares.slice();
-    if (xIsNext) {
-      nextSquares[i] = 'X';
-    } else {
-      nextSquares[i] = 'O';
-    }
+    nextSquares[i] = xIsNext ? 'X' : 'O';
     onPlay(nextSquares, i);
   }
 
@@ -93,18 +101,16 @@ export default function Game() {
 
   const moves = history.map((step, move) => {
     const location = step.location ? `(row: ${step.location.row}, col: ${step.location.col})` : '';
-    const description = move === currentMove
-      ? `You are at move #${move} ${location}`
-      : move > 0
-      ? `Go to move #${move} ${location}`
-      : 'Go to game start';
+    const description = move > 0 ? `Go to move #${move} ${location}` : 'Go to game start';
+  
+    const isCurrentMove = move === currentMove;
+    const buttonClass = isCurrentMove ? 'move-button current-move' : 'move-button';
+  
     return (
       <li key={move}>
-        {move === currentMove ? (
-          <h6>{description}</h6>
-        ) : (
-          <button onClick={() => jumpTo(move)}>{description}</button>
-        )}
+        <button className={buttonClass} onClick={() => jumpTo(move)}>
+          {description}
+        </button>
       </li>
     );
   });
@@ -121,7 +127,7 @@ export default function Game() {
           <input id="toggle" type="checkbox" onClick={toggleSortOrder} />
           <label htmlFor="toggle" />
         </div>
-        <ol reversed={!isAscending}>{sortedMoves}</ol>
+        <ul className="move-list" reversed={!isAscending}>{sortedMoves}</ul>
       </div>
     </div>
   );
