@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import confetti from 'canvas-confetti';
 
 function Square({ value, onSquareClick, isWinningSquare }) {
   const className = isWinningSquare ? 'square winning' : 'square';
@@ -10,17 +11,24 @@ function Square({ value, onSquareClick, isWinningSquare }) {
 }
 
 function Board({ xIsNext, squares, onPlay }) {
-  const {winner, winnerLine} = calculateWinner(squares);
+  const { winner, winnerLine } = calculateWinner(squares);
+
+  useEffect(() => {
+    if (winner) {
+      confetti({
+        particleCount: 200,
+        spread: 70,
+        origin: { y: 0.6 },
+      });
+    }
+  }, [winner]);
+
   function handleClick(i) {
     if (winner || squares[i]) {
       return;
     }
     const nextSquares = squares.slice();
-    if (xIsNext) {
-      nextSquares[i] = 'X';
-    } else {
-      nextSquares[i] = 'O';
-    }
+    nextSquares[i] = xIsNext ? 'X' : 'O';
     onPlay(nextSquares, i);
   }
 
